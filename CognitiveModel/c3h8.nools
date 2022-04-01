@@ -1,0 +1,11 @@
+import("productionRules1.nools");
+
+
+global probtxt =
+"Propane (C3H8) burns in air to produce carbon dioxide and liquid water. Please balance below equation: <br><br> C3H8 + O2 -> CO2 + H2O";
+
+
+global r1 = "C3H8";
+global r2 = "O2";
+global p1 = "CO2";
+global p2 = "H2O";

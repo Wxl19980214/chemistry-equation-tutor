@@ -1,0 +1,41 @@
+import("productionRules1.nools");
+
+
+global probtxt =
+"You and your friends are going to the movies. You want to figure where tickets are cheapest. Last week, you went to the Super-Ciniplex. This week, you are are going to the Larger-than-Life theater. Last week, you got 2 tickets, which together cost $10.  This week, you bought 4 tickets that together cost $12.  Which is the better buy? <br><br>To compare, first find a common multiple of the number of tickets bought at each movie theater.";
+
+global unit = false;
+global multiple = true;
+global factor = false;
+global moreBetter = false;
+
+global givenOption1 = {label: "Super-Ciniplex", amount: 2, cost: 10 };
+global givenOption2 = {label:  "Larger-Than-Life", amount: 4, cost: 12 };
+
+global aLabel = "Number of Tickets";
+global cLabel = "Cost of tickets";
+global q1 = "Use a common multiple to compare the cost of <br>the same number of tickets using each option.";
+global q2 = "What is the total cost for this number <br>of tickets at each theater?";
+global q3 = "Which is a better buy?";
+
+global o1ah1 = "How many tickets did you purchase at the Super-Ciniplex?";
+global o1ah2 = "Take a look at the problem statement and find the number of tickets bought at the Super-Ciniplex.";
+global o2ah1 = "How many tickets did you purchase at the Larger-than-Life theater?";
+global o2ah2 = "Take a look at the problem statement and find the number of tickets bought at the Larger-than-Life theater.";
+global o1ch1 = "How much money did you spend at the Super-Ciniplex?";
+global o1ch2 = "You spent $10 at the Super-Ciniplex.";
+global o2ch1 = "How much money did you spend at the Larger-than-Life theater?";
+global o2ch2 = "The 4 tickets at the Larger-than-Life theater cost $12.";
+global ch1 = "Now use a common multiple to compare the cost of tickets under each option. The common number of tickets that you enter here must be a common multiple of the tickets in each option.";
+global ch2 = "What is a common multiple of 2 and 4?";
+global o1cch1p1 = "You spent $10 to purchase 2 tickets at the Super-Ciniplex. You want to find how much ";
+global o1cch1p2 = " tickets would cost at the Super-Ciniplex.";
+global o1cch2p1 = "You multiply the number of tickets at the Super-Ciniplex (namely, 2) by ";
+global o1cch2p2 = " to get ";
+global o1cch2p3 = " tickets. Multiply the cost of tickets from Super-Ciniplex by the same number.";
+global o2cch1p1 = "You spent $12 to purchase 4 tickets at Larger-than-Life. You want to find how much ";
+global o2cch1p2 = " tickets would cost at Larger-than-Life.";
+global o2cch2p1 = "You multiply the number of tickets at Larger-than-Life (namely, 4) by ";
+global o2cch2p2 = " to get ";
+global o2cch2p3 = " tickets. Multiply the cost of tickets from Larger-than-Life by the same number.";
+global fhp1 = "Now that you know how much the same amount of tickets cost under each option, which option gives you more tickets for your money?";

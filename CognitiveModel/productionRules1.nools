@@ -1,0 +1,20 @@
+import("types.nools");
+
+rule Bootstrap {
+	when {
+		bool : Boolean bool == false from false;
+	}
+	then {
+		assert(new TPA("problemstatement", "UpdateTextArea", probtxt));
+		// assert(new TPA("problemequation", "UpdateTextArea", probequ));
+        assert(new TPA("firstreactantw", "UpdateTextArea", r1));
+        assert(new TPA("secondreactantw", "UpdateTextArea", r2));
+        assert(new TPA("firstproductw", "UpdateTextArea", p1));
+        assert(new TPA("secondproductw", "UpdateTextArea", p2));
+        assert(new TPA("firstreactantf", "UpdateTextArea", r1));
+        assert(new TPA("secondreactantf", "UpdateTextArea", r2));
+        assert(new TPA("firstproductf", "UpdateTextArea", p1));
+        assert(new TPA("secondproductf", "UpdateTextArea", p2));
+		halt();
+	}
+}

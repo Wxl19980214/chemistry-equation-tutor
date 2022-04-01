@@ -1,0 +1,36 @@
+import("productionRules.nools");
+import("skillDefs628.nools");
+
+
+global probtxt =
+"Your mom is buying your favorite cereal, Fruit-Ohs. A bigger box contains 24 oz. of Fruit-Ohs and costs $3.30. A smaller box with 16 oz. costs $2.40. Which box is the better deal?<br><br>To compare, first calculate the cost of 1 ounce of cereal for each of the two options.";
+
+global unit = true;
+global multiple = false;
+global factor = false;
+global moreBetter = false;
+
+global givenOption1 = {label: "Bigger box", amount: 24, cost: 3.30 };
+global givenOption2 = {label:  "Smaller box", amount: 16, cost: 2.40 };
+
+global aLabel = "Ounces of Cereal";
+global cLabel = "Cost of Cereal";
+global q1 = "Use a factor of 1 to compare the cost<br>of 1 ounce of cereal using each option.";
+global q2 = "What is the total cost for this amount<br>of cereal for each of the two boxes?";
+global q3 = "Which box costs less per ounce?";
+
+global o1ah1 = "How many ounces of Fruit-Ohs are there in the bigger box?";
+global o1ah2 = "Take a look at the problem statement and find the number of ounces in the bigger box.";
+global o2ah1 = "How many ounces of Fruit-Ohs are there in the smaller box?";
+global o2ah2 = "Take a look at the problem statement and find the number of ounces in the smaller box.";
+global o1ch1 = "How much does the bigger box of Fruit-Ohs cost?";
+global o1ch2 = "The bigger box costs $3.30.";
+global o2ch1 = "How much does the smaller box of Fruit-Ohs cost?";
+global o2ch2 = "The smaller box costs $2.40.";
+global ch1 = "Now compare the cost of 1 ounce of cereal for the bigger and the smaller box.";
+global ch2 = "Unit here means 1oz.";
+global o1cch1p1 = "If you buy the larger box, 24 ounces of Fruit-Ohs cost $3.30.  How much is that for 1 ounce of Fruit-Ohs?";
+global o1cch2p1 = "24 ounces cost $3.30, so you need to divide by 24 to find how much 1 ounce costs.";
+global o2cch1p1 = "If you buy the smaller box, you get 16 ounces of Fruit-Ohs for $2.40.  How much is that for 1 ounce of Fruit-Ohs?";
+global o2cch2p1 = "16 ounces cost $2.40, so you need to divide by 16 to find how much 1 ounce costs.";
+global fhp1 = "Now that you know how much 1 ounce of cereal costs under each option, which option gives you more cereal for your money?";

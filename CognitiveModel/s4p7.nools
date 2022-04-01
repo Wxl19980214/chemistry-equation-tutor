@@ -1,0 +1,31 @@
+import("productionRules.nools");
+import("skillDefs628.nools");
+
+global probtxt =
+"Kareem and Michael are driving to Washington DC. Kareem has driven 195 miles in 180 minutes. Michael has driven 300 miles in 240 minutes. Who is driving faster?<br><br>To find out, compare how much time Kareem and Michael would take if they drove the same distance.";
+
+global unit = true;
+global multiple = true;
+global factor = true;
+global moreBetter = false;
+
+global givenOption1 = {label: "Kareem", amount: 195, cost: 180 };
+global givenOption2 = {label:  "Michael", amount: 300, cost: 240 };
+
+global aLabel = "Miles Driven";
+global cLabel = "Driving Time";
+global q1 = "Use a common multiple, factor, or a unit amount to compare<br>the time each person takes to drive the same distance.";
+global q2 = "How long does it take each<br>person to drive this distance?";
+global q3 = "Who is driving faster?";
+
+global o1ah1 = "How many miles has Kareem driven?";
+global o1ah2 = "Take a look at the problem statement and find the number of miles that Kareem has driven.";
+global o2ah1 = "How many miles has Michael driven?";
+global o2ah2 = "Take a look at the problem statement and find the number of miles that Michael has driven.";
+global o1ch1 = "How much time has Kareem been driving?";
+global o1ch2 = "Take a look at the problem statement and find the time that Kareem has been underway.";
+global o2ch1 = "How much time has Michael been driving?";
+global o2ch2 = "Take a look at the problem statement and find the time that Michael has been underway.";
+global ch1 = "To scale the driving time, you may use a common multiple, a common factor, or a unit amount of the number of miles driven, 195 for Kareem and 300 for Michael.";
+global ch2 = "Let's try using common multiple.";
+global fhp1 = "Which one drives faster?";

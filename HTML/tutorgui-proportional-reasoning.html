@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+	<head>
+
+		<link rel="stylesheet" type="text/css" href="https://cdn.ctat.cs.cmu.edu/releases/current/CTAT.css">
+
+		<style>
+			/* Styling for the whole tutor interface */
+			html, body {
+				width: 1000px;
+				height: 1100px;
+				margin: 0px;
+				padding: 0px;
+				font-family: Verdana, Arial, Helvetica, sans-serif;
+				font-size: 12px;
+			}
+
+			/* Styling for non-interactive, non-problem-specific elements */
+			.tutor-section {
+				border: 1px solid gold;
+				padding: 3px;
+				background-color: #def;
+			}
+			.section-header {
+				border: 1px solid #9cf;
+				border-radius: 5px;
+				margin: 2px;
+				padding: 4px;
+			}
+			.section-header h1 {
+				font-size: 14px;
+				margin: 0;
+			}
+			.section-header h2 {
+				font-size: 13px;
+				margin: 0;
+			}
+			.section-header p {
+				font-size: 11px;
+				font-style: italic;
+				margin: 0;
+			}
+			#problem {
+				height: 750px;
+				width: 300px;
+				float: left;
+			}
+			#solution {
+				height: 750px;
+				width: 684px;
+				float: right;
+				position: relative;  /* for absolute positiong of elements within */
+			}
+			/* width calculation for #problem and #solution: 280+3+1+3+1 + 664+3+1+3+1 = 288 + 672 = 960 */
+			#hints {
+				width: 472px;
+				float: left;
+				height: 196px; 
+			}
+			#skills {
+				float: right;
+				width: 512px;
+				height: 196px;
+			}
+			/* width calculation for #hints and #skills: 2*( 472+3+1+3+1 ) = 2*480 = 960 */
+
+			/* Styling for standard interactive/dynamic tutor elements */
+			#skill-window {
+				margin: 2px;
+				background-color: #def;
+				width: auto;
+				height: 152px;
+				border: 1px solid #9cf;
+			}
+			#hint-window {
+				float: right;
+				margin: 2px;
+				background-color: #def;
+				border: 1px solid #9cf;
+				height: 152px;
+				width: 396px;
+			}
+			.CTATHintWindow--hint-content {
+				border: 1px solid #9cf;
+			}
+			#hint-button {
+				float: left;
+				margin: 2px;
+			}
+			#done-button {
+				margin: 2px;
+			}
+
+			/* Styling for the elements specific to this tutor */
+			#problemstatement {
+				padding: 5px;
+				margin-top: 7px;
+			}
+			/* Change the looks of the CTATTextInput and CTATTextField */
+		
+			.CTATTextInput {
+				background-color: white;
+				border: 1px solid gold;
+				border-radius: 5px;
+				max-width: 40px;
+				width: 22px;
+				height: 22px;
+				line-height: 22px;
+				margin: 2px;
+				padding: 5px;
+			}
+			.CTATTextInput input[type="text"] {
+				border: none;
+				line-height: inherit;
+			}
+			.CTATTextField {
+				width: auto;
+				height: auto;
+				top: auto; /* This is needed because CTAT.css sets this to 100%. 100%, and 0px; so need to override */
+				margin: 2px;
+				padding: 5px;
+			}  
+			/* my classes */
+			.myButton {
+				position: relative;
+				top: 20px;
+
+			}
+			.inline {
+				display: inline-block;
+				padding-left: 15px;
+			}
+			.container2 {
+				padding-top: 10px;
+				white-space: nowrap;
+			}
+			.container {
+				padding-top: 5px;
+				padding-bottom: 5px;
+			}
+			#input1 {
+				position: relative;
+				width: 40px;
+				left: 20px;
+				text-align: center;
+			}
+			#input2 {
+				position: relative;
+				width: 40px;
+				left: 20px;
+				text-align: center;
+			}
+			#input3 {
+				position: relative;
+				width: 40px;
+				left: 20px;
+				text-align: center;
+			}
+			#input4 {
+				position: relative;
+				width: 40px;
+				left: 20px;
+				text-align: center;
+			}
+			#input5 {
+				display: inline-block;
+				position: relative;
+				width: 40px;
+				left: 20px;
+				text-align: center;
+			}
+			#input6 {
+				position: relative;
+				width: 40px;
+				left: 20px;
+				text-align: center;
+			}
+			#input7 {
+				position: relative;
+				width: 40px;
+				left: 20px;
+				text-align: center;
+			}
+			#input8 {
+				position: relative;
+				width: 40px;
+				left: 20px;
+				text-align: center;
+			}
+			
+			.instr {
+				top: 10px;
+				left: 10px;
+				position: relative;
+			}
+			.prompt {
+				position: relative;
+
+			}
+			/* Position the input elements within the "solution" tutor-section; the positions are relative to the top-left corner of the "solution" section  */
+			#optionone {
+				position: absolute;
+				width: 120px;
+				left: 360px;
+				text-align: center;
+			}
+			#optiontwo {
+				position: absolute;
+				width:  120px;
+				left: 510px;
+				text-align: center;
+			}
+			#itemlabel {
+				position: absolute;
+				left: 186px;
+				top: 84px;
+				width: 160px;
+				text-align: right;
+			}
+			#option1amt {
+				position: absolute;
+				left: 360px;
+				top: 80px;
+			}
+			#option2amt {
+				position: absolute;
+				left: 510px;
+				top: 80px;
+			}
+			#costlabel {
+				position: absolute;
+				left: 186px;
+				top: 124px; 
+				width: 160px;
+				text-align: right;
+			}
+			#option1cost {
+				position: absolute;
+				left: 360px;
+				top: 120px;
+			}
+			#option2cost {
+				position: absolute;
+				left: 510px;
+				top: 120px;
+			}
+			#questionone {
+				width: 400px;
+				position: absolute;
+				top: 156px;
+				left: 20px;
+				text-align: right;
+			}
+			#commonamt {
+				position: absolute;
+				left: 435px;
+				top: 160px;
+			}
+ 			#questiontwo {
+ 				position: absolute;
+ 				top: 198px;
+				width: 326px;
+				left: 20px;
+				text-align: right;
+ 			}
+			#option1end {
+				position: absolute;
+				left: 360px;
+				top: 200px;
+			}
+			#option2end {
+				position: absolute;
+				left: 510px;
+				top: 200px 
+			}
+			#questionthree {
+				position: absolute;
+				left: 120px;
+				top: 260px;
+				width: 240px;
+				text-align: right;
+			}
+			#option1radio {
+				position: relative;
+				left: 200px;
+				top: 10px;
+			}
+			#option2radio {
+				position: relative;
+				left: 300px;
+				top: 10px;
+			}
+			
+
+		</style>
+
+    <script src="https://cdn.ctat.cs.cmu.edu/releases/current/jquery.min.js"></script>
+    <script src="https://cdn.ctat.cs.cmu.edu/releases/current/ctat.min.js"></script>
+    <script src="https://cdn.ctat.cs.cmu.edu/releases/current/ctatloader.js"></script>
+    <script src="https://cdn.ctat.cs.cmu.edu/releases/current/nools.js"></script>
+    <script src="Assets/steps.js"></script>
+
+		<script>
+			var myVars =
+			{
+				question_file: "../FinalBRDs/problem.brd",
+				tutoring_service_communication: "javascript"
+			};
+			function ctatOnload ()
+			{
+//				initTutor(myVars);
+				initTutor();
+			}
+		</script>
+	</head>
+
+	<body>
+		<!-- Header -->
+		<div class="tutor-section">
+			<h1>Balance Chemical Equations. </h1>
+		</div>
+
+		<!-- Problem statement -->		
+		<div id="problem" class="tutor-section" >
+			<div class="section-header">
+				<h2>Problem</h2>
+				<p>Find your goal in this problem.</p>
+			</div>
+			<div id="problemstatement" class="CTATTextField" ></div>
+			
+			
+		</div>
+
+		<!-- Solution steps -->
+		<div id="solution" class="tutor-section" >
+			<div class="section-header">
+				<h2>Solution</h2>
+				<p>Generate solution steps with feedback from the tutor.</p>
+			</div>
+			
+			<div class="container">
+				<h4 class="prompt"> Step 1. What is the least common multiple of number of Carbon atom in reactants and products? </h4>
+				<div id="input1" class="CTATTextInput" ></div>
+				<div class="instr"> Please fill in the working equation below so that both side have exactly the same number of carbon atoms. </div>
+			</div>
+
+			<div class="container">
+				<h4 class="prompt"> Step 2. What is the least common multiple of number of Hydrogen atom in reactants and products? </h4>
+				<div id="input2" class="CTATTextInput" ></div>
+				<div class="instr"> Please fill in the working equation below so that both side have exactly the same number of Hydrogen atoms. </div>
+			</div>
+
+			<div class="container">
+				<h4 class="prompt"> Step 3. Now how many oxygen atoms there are in the products? </h4>
+				<div id="input3" class="CTATTextInput" ></div>
+				<h4 class="prompt"> Step 4. How many Oxgen contain above amount of oxygen atoms? </h4>
+				<div id="input4" class="CTATTextInput" ></div>
+				<div class="instr"> Please fill in the working equation below so that both side have exactly the same number of Oxygen atoms. </div>
+			</div>
+			
+			<div class="container2">
+				<h3> Working equation: </h3> 
+				<div id="input5" class="CTATTextInput" ></div> <div id="firstreactantw" class="inline CTATTextField"></div>    + 
+				<div id="input6" class="CTATTextInput" ></div> <div id="secondreactantw" class="inline CTATTextField"></div> ===
+				<div id="input7" class="CTATTextInput" ></div> <div id="firstproductw" class="inline CTATTextField"></div> +
+				<div id="input8" class="CTATTextInput" ></div> <div id="secondproductw" class="inline CTATTextField"></div>
+			</div>
+
+			<div class="container2">
+				<h3>Are all coefficients integers?  </h3>
+				<div id="option1radio" class="CTATRadioButton" name="radioGroup">Yes</div>
+				<div id="option2radio" class="CTATRadioButton" name="radioGroup">No</div>
+			</div>
+
+			<div class="container2">
+				<h3> Final balanced equation: </h3> 
+				<div id="input5" class="CTATTextInput" ></div> <div id="firstreactantf" class="inline CTATTextField"></div>    + 
+				<div id="input6" class="CTATTextInput" ></div> <div id="secondreactantf" class="inline CTATTextField"></div> ===
+				<div id="input7" class="CTATTextInput" ></div> <div id="firstproductf" class="inline CTATTextField"></div> +
+				<div id="input8" class="CTATTextInput" ></div> <div id="secondproductf" class="inline CTATTextField"></div>
+			</div>
+			
+		</div>
+
+		<!-- Hint panel -->
+		<div id="hints" class="tutor-section" >
+			<div class="section-header">
+				<h2>Hints</h2>
+				<p>Request and read hints to help you learn.</p>
+			</div>
+			<div id="hint-window" class="CTATHintWindow" ></div>
+			<div id="hint-button" class="CTATHintButton" ></div>
+			<div id="done-button" class="CTATDoneButton" ></div>
+		</div>
+
+		<!-- Skill meter -->
+		<div id="skills" class="tutor-section" >
+			<div class="section-header">
+				<h2>Skills</h2>
+				<p>Watch your skills grow as you solve tutor problems.</p>
+			</div>
+			<div id="skill-window" class="CTATSkillWindow" >
+		</div>
+	</body>
+</html>

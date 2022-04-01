@@ -1,0 +1,98 @@
+define TextInput {
+	name: null,
+	value: null,
+	constructor: function(n, v) {
+		this.name = n;
+		this.value = v;
+	}
+}
+
+define RadioButton {
+	name: null,
+	input: null,
+	value: null,
+	group: null,
+	constructor: function(n, i, v, g) {
+		this.name = n;
+		this.input = i;
+		this.value = v;
+		this.group = g;
+	}
+}
+
+// ----- types needed by the model tracer, no need to edit these ----
+define StudentValues {
+	selection: null,
+	action: null,
+	input: null,
+	constructor: function(s,a,i) {
+		this.selection = s;
+		this.action = a;
+		this.input = i;
+	}
+}
+
+define TPA {
+	selection: null,
+	action: null,
+	input: null,
+	constructor: function(s, a, i) {
+		this.selection = s;
+		this.action = a;
+		this.input = i;
+	}
+}
+
+define Hint {
+	precedence: 0,
+	msg: "",
+	constructor: function(m, optPrecedence) {
+		this.msg = m;
+		this.precedence = optPrecedence || 0;
+	}
+}
+
+define Problem {
+	name: null,
+	options: [],
+	unit: null,
+	commonFactor: null,
+	commonMultiple: null,
+	moreIsBetter: null,
+	commonAmountIE: null,
+	// final: null,
+	done: null,
+
+
+	constructor: function(name, aoptions, unit, commonFactor, commonMultiple, moreIsBetter, commonAmountIE, done) {
+		this.name = name;
+		this.options = aoptions;
+		this.unit = unit;
+		this.commonFactor = commonFactor;
+		this.commonMultiple = commonMultiple;
+		this.moreIsBetter = moreIsBetter;
+		this.commonAmountIE = commonAmountIE;
+		// this.final = final;
+		this.done = done;
+	}
+
+}
+
+define Option {
+	name: null,
+	givenValues: [],
+	interfaceElements: [],
+
+	constructor: function(name, aValue, aInterfaceElements) {
+		this.name = name;
+		this.givenValues = aValue;
+		this.interfaceElements = aInterfaceElements;
+	}
+}
+
+define CommonAmountSubgoal {
+	amounts: [],
+	constructor: function(n) {
+		this.amounts = n;
+	}
+}
