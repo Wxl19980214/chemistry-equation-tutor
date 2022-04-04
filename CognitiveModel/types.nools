@@ -7,6 +7,15 @@ define TextInput {
 	}
 }
 
+define radioJudge {
+	name: null,
+	value: null,
+	constructor: function(n,v) {
+		this.name = n;
+		this.value = v;
+	}
+}
+
 define RadioButton {
 	name: null,
 	input: null,
@@ -49,6 +58,26 @@ define Hint {
 	constructor: function(m, optPrecedence) {
 		this.msg = m;
 		this.precedence = optPrecedence || 0;
+	}
+}
+
+define chemProblem {
+	name: null,
+	readyForFinal: null,
+	allIntegers: null,
+	reactantNames: [],
+	productNames: [],
+	reactantAtoms: [],
+	productAtoms: [],
+
+	constructor: function(name, rf, ai, rn, pn, ra, pa) {
+		this.name = name;
+		this.readyForFinal = rf;
+		this.allIntegers = ai;
+		this.reactantNames = rn;
+		this.productNames = pn;
+		this.reactantAtoms = ra;
+		this.productAtoms = pa;
 	}
 }
 
