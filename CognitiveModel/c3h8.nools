@@ -1,4 +1,5 @@
 import("productionRules1.nools");
+import("skillDefs628.nools");
 
 
 global probtxt =
@@ -9,3 +10,6 @@ global r1 = "C3H8";
 global r2 = "O2";
 global p1 = "CO2";
 global p2 = "H2O";
+
+global reactants = {label: "reactant atom", c: 3, h: 8, o: 2};
+global products = {label: "product atom", c: 1, h: 2, o: 3};

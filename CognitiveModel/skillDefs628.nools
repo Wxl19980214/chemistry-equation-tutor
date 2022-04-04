@@ -2,52 +2,39 @@
 
 global skill_definitions = [
 	{
-		ruleName: "EnterGivenAmount",
-		skillName: "EnterGivenAmount",
-		category: "6.28",
-		opportunities: 2,
-		label: "Enter Given Amount"
-	},
-	{
-		ruleName: "EnterGivenCost",
-		skillName: "EnterGivenCost",
-		category: "6.28",
-		opportunities: 2,
-		label: "Enter Given Cost"
-	},
-	{
-		ruleName: "UseCommonMultiple",
-		skillName: "UseCommonMultiple",
+		ruleName: "EnterLcmC",
+		skillName: "EnterLcmC",
 		category: "6.28",
 		opportunities: 1,
-		label: "Use Common Multiple"
+		label: "Find the lcm of carbon atom in both sides."
 	},
 	{
-		ruleName: "UseCommonFactor",
-		skillName: "UseCommonFactor",
+		ruleName: "EnterLcmH",
+		skillName: "EnterLcmH",
 		category: "6.28",
 		opportunities: 1,
-		label: "Use Common Factor"
+		label: "Find the lcm of hydrogen atom in both sides."
 	},
 	{
-		ruleName: "useUnit",
-		skillName: "useUnit",
+		ruleName: "EnterOProduct",
+		skillName: "EnterOProduct",
 		category: "6.28",
 		opportunities: 1,
-		label: "Use Unit"
+		label: "Calculate Oxygen atom ammount."
 	},
 	{
-		ruleName: "DetermineScaledCost",
-		skillName: "DetermineScaledCost",
-		category: "6.28",
-		opportunities: 2,
-		label: "Scale Cost"
-	},
-	{
-		ruleName: "Compare",
-		skillName: "Compare",
+		ruleName: "EnterOReactant",
+		skillName: "EnterOReactant",
 		category: "6.28",
 		opportunities: 1,
-		label: "Compare Options"
-	}
+		label: "Calculate Oxygen ammount."
+	},
+	{
+		ruleName: "SelectRadio",
+		skillName: "SelectRadio",
+		category: "6.28",
+		opportunities: 1,
+		label: "Determine whether coefficients are integer."
+	}	
+
 ];

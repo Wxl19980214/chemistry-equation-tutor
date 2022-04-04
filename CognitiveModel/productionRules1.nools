@@ -1,10 +1,55 @@
 import("types.nools");
 
+function greaterThan(a, b) {
+	var ret = (parseFloat(a, 10) > parseFloat(b, 10));
+	return ret;
+}
+
+function gcd(o, p)
+{
+	if (o < p) {
+		let tmp = o;
+		o = p;
+		p = tmp;
+	}
+	var r;
+	while (p >= 1) {
+		r = o%p;
+		o = p;
+		p = r
+	}	
+	return o;
+}
+
+function lcm(m, n)
+{
+	return ((m*n)/gcd(m, n));
+}
 rule Bootstrap {
 	when {
 		bool : Boolean bool == false from false;
 	}
 	then {
+        console.log("starting point");
+        assert(new TextInput("input1", ""));
+        assert(new TextInput("input2", ""));
+        assert(new TextInput("input3", ""));
+        assert(new TextInput("input4", ""));
+        assert(new TextInput("input5", ""));
+        assert(new TextInput("input6", ""));
+        assert(new TextInput("input7", ""));
+        assert(new TextInput("input8", ""));
+        assert(new TextInput("input9", ""));
+        assert(new TextInput("input10", ""));
+        assert(new TextInput("input11", ""));
+        assert(new TextInput("input12", ""));
+        assert(new RadioButton("option1radio", "option1radio: Yes", null, "radioGroup"));
+        assert(new RadioButton("option2radio", "option2radio: No", null, "radioGroup"));
+        let values1 = [reactants.c, reactants.h, reactants.o];
+        let values2 = [products.c, products.h, products.o];
+        let name1 = [r1,r2];
+        let name2 = [p1,p2];
+        assert(new chemProblem("name", "", "", name1, name2, values1, values2));
 		assert(new TPA("problemstatement", "UpdateTextArea", probtxt));
 		// assert(new TPA("problemequation", "UpdateTextArea", probequ));
         assert(new TPA("firstreactantw", "UpdateTextArea", r1));
@@ -15,6 +60,817 @@ rule Bootstrap {
         assert(new TPA("secondreactantf", "UpdateTextArea", r2));
         assert(new TPA("firstproductf", "UpdateTextArea", p1));
         assert(new TPA("secondproductf", "UpdateTextArea", p2));
+        // testing
+        // assert(new TPA("input4", "UpdateTextArea", 8));
+        console.log("ending point");
+
+		setProblemAttribute("use_backtracking", true);
+		setProblemAttribute("prune_old_activations", true);
 		halt();
 	}
+}
+
+/*
+ENTER-LCM-C
+IF there is a problem
+And interface input1 hasn't been written
+THEN
+Write the lcm to the interface
+*/
+
+rule EnterLcmC {
+	
+	when {
+		p : chemProblem { reactantAtoms : ra, productAtoms: pa };
+
+		ie : TextInput ie.name == "input1" && !ie.value { name: sel };
+	}
+	then {
+		
+        f = lcm(ra[0], pa[0]);
+
+		if (checkSAI({selection: sel, action: "UpdateTextField", input: f})) {
+			modify(ie, "value", f);
+			halt();
+		}
+
+        assert(new Hint("How many carbon atoms there are in the left hand side of equation now?"));
+        assert(new Hint("How many carbon atoms there are in the right hand side of equation now?"));
+        assert(new Hint("What is their least common multiple?"));
+		assert(new Hint("Enter '"+ f +"' in the highlighted input field."));
+	}
+}
+
+/*
+ENTER-WORKING-EQUATION-C-REACTANT
+IF input1 has been written
+And interface input5 hasn't been written
+THEN
+Write this interface accordingly
+*/
+
+rule EnterWeCReactant {
+
+	when {
+		p : chemProblem { reactantAtoms : ra, productAtoms: pa,
+                          reactantNames: rn, productNames: pn 
+                        };
+
+		ie : TextInput ie.name == "input1" && ie.value { name: sel };
+
+        ie1 : TextInput ie1.name == "input5" && !ie1.value { name: sel1 };
+
+	}
+	then {
+		
+        f = ie.value / ra[0];
+
+		if (checkSAI({selection: sel1, action: "UpdateTextField", input: f})) {
+			modify(ie1, "value", f);
+			halt();
+		}
+
+        assert(new Hint("How many " + rn[0] + " do we need to make this side have " + ie.value + " carbon atoms?"));
+		assert(new Hint("Enter '"+ f +"' in the highlighted input field."));
+	}
+
+}
+
+/*
+ENTER-WORKING-EQUATION-C-PRODUCT
+IF input1 has been written
+And interface input7 hasn't been written
+THEN
+Write this interface accordingly
+*/
+
+rule EnterWeCProduct {
+
+	when {
+		p : chemProblem { reactantAtoms : ra, productAtoms: pa,
+                          reactantNames: rn, productNames: pn 
+                        };
+
+		ie : TextInput ie.name == "input1" && ie.value { name: sel };
+
+        ie1 : TextInput ie1.name == "input7" && !ie1.value { name: sel1 };
+
+	}
+	then {
+		
+        f = ie.value / pa[0];
+        // console.log("sel: " + ie.value + " pa[0]: " + pa[0] + " f right here: " + f);
+		if (checkSAI({selection: sel1, action: "UpdateTextField", input: f})) {
+			modify(ie1, "value", f);
+			halt();
+		}
+
+        assert(new Hint("How many " + pn[0] + " do we need to make this side have " + ie.value + " carbon atoms?"));
+		assert(new Hint("Enter '"+ f +"' in the highlighted input field."));
+	}
+
+}
+
+
+
+/*
+ENTER-LCM-H
+IF interface input5 and input7 has been written
+And interface input1 has been written
+And interface input2 has not been written
+THEN
+Write the lcm to the interface input2
+*/
+
+rule EnterLcmH {
+	
+	when {
+		p : chemProblem { reactantAtoms : ra, productAtoms: pa };
+
+		ie : TextInput ie.name == "input1" && ie.value;
+        ie2 : TextInput ie2.name == "input2" && !ie2.value { name: sel };
+        ie5 : TextInput ie5.name == "input5" && ie5.value;
+        ie7 : TextInput ie7.name == "input7" && ie7.value;
+	}
+	then {
+		
+        f = lcm(ra[1], pa[1]);
+
+		if (checkSAI({selection: sel, action: "UpdateTextField", input: f})) {
+			modify(ie2, "value", f);
+			halt();
+		}
+
+        assert(new Hint("How many hydrogen atoms there are in the left hand side of equation now?"));
+        assert(new Hint("How many hydrogen atoms there are in the right hand side of equation now?"));
+        assert(new Hint("What is their least common multiple?"));
+		assert(new Hint("Enter '"+ f +"' in the highlighted input field."));
+	}
+}
+
+/*
+ENTER-WORKING-EQUATION-H-PRODUCT
+IF input2 has been written
+And interface input8 hasn't been written
+THEN
+Write this interface accordingly
+*/
+
+rule EnterWeHProduct {
+
+	when {
+		p : chemProblem { reactantAtoms : ra, productAtoms: pa,
+                          reactantNames: rn, productNames: pn 
+                        };
+
+		ie : TextInput ie.name == "input2" && ie.value { name: sel };
+
+        ie1 : TextInput ie1.name == "input8" && !ie1.value { name: sel1 };
+
+	}
+	then {
+		
+        f = ie.value / pa[1];
+    
+		if (checkSAI({selection: sel1, action: "UpdateTextField", input: f})) {
+			modify(ie1, "value", f);
+			halt();
+		}
+
+        assert(new Hint("How many " + pn[1] + " do we need to make this side have " + ie.value + " hydrogen atoms?"));
+		assert(new Hint("Enter '"+ f +"' in the highlighted input field."));
+	}
+
+}
+
+/*
+ENTER-OXYGEN-IN-PRODUCTS
+IF interface input2, input7 and input8 has been written
+And interface input3 has not been written
+THEN
+Write the interface
+*/
+
+rule EnterOProduct {
+
+    when {
+		p : chemProblem { reactantAtoms : ra, productAtoms: pa,
+                          reactantNames: rn, productNames: pn 
+                        };
+
+		ie2 : TextInput ie2.name == "input2" && ie2.value;
+
+        ie7 : TextInput ie7.name == "input7" && ie7.value;
+
+        ie8 : TextInput ie8.name == "input8" && ie8.value;
+
+        ie3 : TextInput ie3.name == "input3" && !ie3.value { name: sel3 };
+
+	}
+	then {
+		
+        f = ie7.value * 2 + ie8.value;
+    
+		if (checkSAI({selection: sel3, action: "UpdateTextField", input: f})) {
+			modify(ie3, "value", f);
+			halt();
+		}
+
+        assert(new Hint("How many Oxygen atoms there are in the product side of equation? "));
+        assert(new Hint("We have " + ie7.value + " CO2, that's how many Oxygen atoms? "));
+        assert(new Hint("We have " + ie8.value + " H2O, that's how many Oxygen atoms? "));
+		assert(new Hint("Enter '"+ f +"' in the highlighted input field."));
+	}
+
+}
+
+
+/*
+ENTER-OXYGEN-IN-REACTANT
+IF interface input3 has been written
+And interface input4 has not been written
+THEN
+write input4
+*/
+
+rule EnterOReactant {
+
+    when {
+            p : chemProblem { reactantAtoms : ra, productAtoms: pa };
+
+            ie3 : TextInput ie3.name == "input3" && ie3.value;
+            ie4 : TextInput ie4.name == "input4" && !ie4.value {name: sel};
+            ie5 : TextInput ie5.name == "input5" && ie5.value;
+            ie7 : TextInput ie7.name == "input7" && ie7.value;
+            ie8 : TextInput ie8.name == "input8" && ie8.value;
+            ie6 : TextInput ie6.name == "input6" && !ie6.value;
+            ie9 : TextInput ie9.name == "input9" && !ie9.value;
+            ie10 : TextInput ie10.name == "input10" && !ie10.value;
+            ie11 : TextInput ie11.name == "input11" && !ie11.value;
+            ie12 : TextInput ie12.name == "input12" && !ie12.value;
+    
+        }
+    then {
+        
+        f = ie3.value * 1.0 / 2;
+        console.log("f in here: " + f);
+        if (checkSAI({selection: sel, action: "UpdateTextField", input: f},
+        
+            function(studentSAI) {
+                var inputNum = parseFloat(studentSAI.input, 10);
+				return (f == inputNum);
+			}))
+        {
+            modify(ie4, "value", f);
+            halt();
+        }
+
+        assert(new Hint("How many oxygen contains " + ie3.value  + " oxygen atoms? "));
+        assert(new Hint("Enter '"+ f +"' in the highlighted input field."));
+    }
+}
+
+/*
+ENTER-WORKING-EQUATION-O-REACTANT
+IF input4 has been written
+And interface input6 hasn't been written
+THEN
+Write this interface accordingly
+*/
+
+rule EnterWeOReactant {
+
+	when {
+		p : chemProblem { reactantAtoms : ra, productAtoms: pa,
+                          reactantNames: rn, productNames: pn 
+                        };
+
+		ie4 : TextInput ie4.name == "input4" && ie4.value;
+        ie5 : TextInput ie5.name == "input5" && ie5.value;
+        ie7 : TextInput ie7.name == "input7" && ie7.value;
+        ie8 : TextInput ie8.name == "input8" && ie8.value;
+        ie6 : TextInput ie6.name == "input6" && !ie6.value { name: sel6 };
+
+	}
+	then {
+		
+        f = ie4.value;
+        isInteger = Number.isInteger(ie5.value)
+                    && Number.isInteger(ie4.value) 
+                    && Number.isInteger(ie7.value) 
+                    && Number.isInteger(ie8.value);
+        if (isInteger) {
+            modify(p, "allIntegers", true);
+            assert(new radioJudge("rj", "option1radio"));
+        } else {
+            modify(p, "allIntegers", false);
+            assert(new radioJudge("rj", "option2radio"));
+        }
+		if (checkSAI({selection: sel6, action: "UpdateTextField", input: f})) {
+			modify(ie6, "value", f);
+			halt();
+		}
+
+        assert(new Hint("Enter the ammount you calculated above for oxygen to the equation."));
+		assert(new Hint("Enter '"+ f +"' in the highlighted input field."));
+	}
+
+}
+
+
+/*
+SELECT-RADIO
+IF there is a judge with filled value
+And there is a radiobutton has the name of that value
+THEN
+Select that button and change problem flag
+*/
+
+rule SelectRadio {
+
+    when {
+        p : chemProblem;
+
+        jg: radioJudge jg.value {value: v};
+
+		radioInput1 : RadioButton radioInput1.name == v && !radioInput1.value
+			{group: radioGroupName, input: inp};
+    }
+
+    then {
+        console.log(radioGroupName);
+        console.log(inp);
+        if (checkSAI({selection: radioGroupName, action: "UpdateRadioButton", input: inp})) {
+            console.log("test");
+            modify(radioInput1, "value", inp);
+            modify(p, "readyForFinal", true);
+            halt();
+        }
+
+        assert(new Hint("Are all coefficients in the working equation integer?"));
+
+    }
+}
+
+/*
+ENTER-FINAL-5
+If the read-for-final flag is true in problem
+And interface input5 has been written
+And interface input9 has not been written
+THEN
+fill in input 9
+*/
+
+rule EnterFinal5 {
+
+    when {
+        p : chemProblem p.readyForFinal == true;
+        ie5 : TextInput ie5.name == "input5" && ie5.value;
+        ie9 : TextInput ie9.name == "input9" && !ie9.value { name: sel };
+    }
+
+    then {
+
+        f = 0;
+        if (p.allIntegers) {
+            f = ie5.value;
+        } else {
+            f = ie5.value * 2;
+        }
+
+        if (checkSAI({selection: sel, action: "UpdateTextField", input: f})) {
+            modify(ie9, "value", f);
+            halt();
+        }
+
+        assert(new Hint("What number do you need to multiply to make both side coefficients integer?"));
+        if (p.allIntegers) {
+            assert(new Hint("Since all are integer, you mupltiply both side by 1. "));
+        } else {
+            assert(new Hint("Since coefficient before oxygen is not integer, you mupltiply both side by 2."));
+        }
+        assert(new Hint("Please enter: '" + f + "' in the field"));
+    }
+
+}
+
+/*
+ENTER-FINAL-6
+If the read-for-final flag is true in problem
+And interface input6 has been written
+And interface input10 has not been written
+THEN
+fill in input 10
+*/
+
+rule EnterFinal6 {
+
+    when {
+        p : chemProblem p.readyForFinal == true;
+        ie6 : TextInput ie6.name == "input6" && ie6.value;
+        ie10 : TextInput ie10.name == "input10" && !ie10.value { name: sel };
+    }
+
+    then {
+
+        f = 0;
+        if (p.allIntegers) {
+            f = ie6.value;
+        } else {
+            f = ie6.value * 2;
+        }
+
+        if (checkSAI({selection: sel, action: "UpdateTextField", input: f})) {
+            modify(ie10, "value", f);
+            halt();
+        }
+
+        assert(new Hint("What number do you need to multiply to make both side coefficients integer?"));
+        if (p.allIntegers) {
+            assert(new Hint("Since all are integer, you mupltiply both side by 1. "));
+        } else {
+            assert(new Hint("Since coefficient before oxygen is not integer, you mupltiply both side by 2."));
+        }
+        assert(new Hint("Please enter: '" + f + "' in the field"));
+    }
+
+}
+
+/*
+ENTER-FINAL-7
+If the read-for-final flag is true in problem
+And interface input7 has been written
+And interface input11 has not been written
+THEN
+fill in input 11
+*/
+
+rule EnterFinal7 {
+
+    when {
+        p : chemProblem p.readyForFinal == true;
+        ie7 : TextInput ie7.name == "input7" && ie7.value;
+        ie11 : TextInput ie11.name == "input11" && !ie11.value { name: sel };
+    }
+
+    then {
+
+        f = 0;
+        if (p.allIntegers) {
+            f = ie7.value;
+        } else {
+            f = ie7.value * 2;
+        }
+
+        if (checkSAI({selection: sel, action: "UpdateTextField", input: f})) {
+            modify(ie11, "value", f);
+            halt();
+        }
+
+        assert(new Hint("What number do you need to multiply to make both side coefficients integer?"));
+        if (p.allIntegers) {
+            assert(new Hint("Since all are integer, you mupltiply both side by 1. "));
+        } else {
+            assert(new Hint("Since coefficient before oxygen is not integer, you mupltiply both side by 2."));
+        }
+        assert(new Hint("Please enter: '" + f + "' in the field"));
+    }
+
+}
+
+/*
+ENTER-FINAL-8
+If the read-for-final flag is true in problem
+And interface input8 has been written
+And interface input12 has not been written
+THEN
+fill in input 12
+*/
+
+rule EnterFinal8 {
+
+    when {
+        p : chemProblem p.readyForFinal == true;
+        ie8 : TextInput ie8.name == "input8" && ie8.value;
+        ie12 : TextInput ie12.name == "input12" && !ie12.value { name: sel };
+    }
+
+    then {
+
+        f = 0;
+        if (p.allIntegers) {
+            f = ie8.value;
+        } else {
+            f = ie8.value * 2;
+        }
+
+        if (checkSAI({selection: sel, action: "UpdateTextField", input: f})) {
+            modify(ie12, "value", f);
+            halt();
+        }
+
+        assert(new Hint("What number do you need to multiply to make both side coefficients integer?"));
+        if (p.allIntegers) {
+            assert(new Hint("Since all are integer, you mupltiply both side by 1. "));
+        } else {
+            assert(new Hint("Since coefficient before oxygen is not integer, you mupltiply both side by 2."));
+        }
+        assert(new Hint("Please enter: '" + f + "' in the field"));
+    }
+
+}
+
+/*
+DONE
+IF a radio button has been (correctly) clicked
+THEN
+Click Done
+*/
+
+// RULE done
+rule clickDone {
+  when {
+    // Conditions for completed problem
+	p : chemProblem p.readyForFinal == true;
+    ie9 : TextInput ie9.name == "input9" && ie9.value;
+    ie10 : TextInput ie10.name == "input10" && ie10.value;
+    ie11 : TextInput ie11.name == "input11" && ie11.value;
+    ie12 : TextInput ie12.name == "input12" && ie12.value ;
+  }
+
+  then {
+    let predictedSAI = {
+           selection: "done",
+           action: "ButtonPressed",
+           input: "don't_care"
+    };
+    console.log("testing2");
+    if (checkSAI(predictedSAI)) {
+        console.log("testing1");
+        modify(p, "done", true);
+        halt();
+    } else {
+        console.log("testing3");
+        backtrack();
+    }
+  }
+}
+
+
+/*
+BUG
+If input1 has been enter
+And input 2 has not been enter
+And input5,7 has not been enter
+THEN
+Output bug
+*/
+rule EnterHEarly {
+    salience: -2;
+    when {
+        p: chemProblem;
+        ie1 : TextInput ie1.name == "input1" && ie1.value;
+        ie2 : TextInput ie2.name == "input2" && !ie2.value { name: sel };
+        ie5 : TextInput ie5.name == "input5" && !ie5.value;
+        ie7 : TextInput ie7.name == "input7" && !ie7.value;
+
+ } then {
+    if(checkSAI({selection: sel, action: "UpdateTextField",
+      			input: "don't_care"}, null, true)) {
+        setSuccessOrBugMsg("You need to fill in the working equation below before enter this.");
+    }
+    backtrack();
+ }
+}
+
+rule EnterOInWEarly {
+    salience: -2;
+    when {
+        p: chemProblem;
+        ie4 : TextInput ie4.name == "input4" && !ie4.value;
+        ie8 : TextInput ie8.name == "input8" && !ie8.value;
+        ie6 : TextInput ie6.name == "input6" && !ie6.value { name: sel };
+
+
+ } then {
+    if(checkSAI({selection: sel, action: "UpdateTextField",
+      			input: "don't_care"}, null, true)) {
+        setSuccessOrBugMsg("Are we set on how many oxygen atoms there are in the product side? If not, please follow the instructions and continue working.");
+    }
+    backtrack();
+ }
+}
+
+rule EnterHInWEarlyInput5 {
+    salience: -2;
+    when {
+        p: chemProblem;
+        ie1 : TextInput ie1.name == "input1" && ie1.value;
+        ie2 : TextInput ie2.name == "input2" && !ie2.value;
+        ie5 : TextInput ie5.name == "input5" && !ie5.value;
+        ie8 : TextInput ie8.name == "input8" && !ie8.value { name: sel };
+
+ } then {
+    if(checkSAI({selection: sel, action: "UpdateTextField",
+      			input: "don't_care"}, null, true)) {
+        setSuccessOrBugMsg("Please working on substances that only contain carbon atoms. ");
+    }
+    backtrack();
+ }
+}
+
+
+rule EnterHInWEarlyInput7 {
+    salience: -2;
+    when {
+        p: chemProblem;
+        ie1 : TextInput ie1.name == "input1" && ie1.value;
+        ie2 : TextInput ie2.name == "input2" && !ie2.value;
+        ie7 : TextInput ie7.name == "input7" && !ie7.value;
+        ie8 : TextInput ie8.name == "input8" && !ie8.value { name: sel };
+
+ } then {
+    if(checkSAI({selection: sel, action: "UpdateTextField",
+      			input: "don't_care"}, null, true)) {
+        setSuccessOrBugMsg("Please working on substances that only contain carbon atoms. ");
+    }
+    backtrack();
+ }
+}
+
+rule EnterHInWEarlyInput5And7 {
+    salience: -2;
+    when {
+        p: chemProblem;
+        ie1 : TextInput ie1.name == "input1" && ie1.value;
+        ie2 : TextInput ie2.name == "input2" && !ie2.value;
+        ie5 : TextInput ie5.name == "input5" && ie5.value;
+        ie7 : TextInput ie7.name == "input7" && ie7.value;
+        ie8 : TextInput ie8.name == "input8" && !ie8.value { name: sel };
+
+ } then {
+    if(checkSAI({selection: sel, action: "UpdateTextField",
+      			input: "don't_care"}, null, true)) {
+        setSuccessOrBugMsg("Please get the lcm of hydrogen first. ");
+    }
+    backtrack();
+ }
+}
+
+
+rule EnterOInteger {
+    salience: -2;
+    when {
+        p: chemProblem;
+        ie3 : TextInput ie3.name == "input3" && ie3.value;
+        ie4 : TextInput ie4.name == "input4" && !ie4.value { name: sel };
+
+} then {
+    
+    if (ie3.value % 2 == 1) {
+        f = ie3.value / 2;
+        if(checkSAI({selection: sel, action: "UpdateTextField",
+                    input: f}, null, true)) {
+
+            setSuccessOrBugMsg("Please don't round up and enter a decimal answer.");
+        }
+        backtrack();
+    }
+}
+}
+
+
+rule EnterFinalEquation9Early {
+    salience: -2;
+    when {
+        p: chemProblem;
+        ie6 : TextInput ie6.name == "input6" && !ie6.value;
+        ie9 : TextInput ie9.name == "input9" && !ie9.value { name: sel };
+
+ } then {
+    
+    if(checkSAI({selection: sel, action: "UpdateTextField",
+      			input: "don't_care"}, null, true)) {
+        setSuccessOrBugMsg("Please working on the working equation first. ");
+    }
+    backtrack();
+    
+ }
+
+}
+
+
+rule EnterFinalEquation10Early {
+    salience: -2;
+    when {
+        p: chemProblem;
+        ie6 : TextInput ie6.name == "input6" && !ie6.value;
+        ie10 : TextInput ie10.name == "input10" && !ie10.value { name: sel };
+
+ } then {
+    
+    if(checkSAI({selection: sel, action: "UpdateTextField",
+      			input: "don't_care"}, null, true)) {
+        setSuccessOrBugMsg("Please working on the working equation first. ");
+    }
+    backtrack();
+    
+ }
+
+}
+
+rule EnterFinalEquation11Early {
+    salience: -2;
+    when {
+        p: chemProblem;
+        ie6 : TextInput ie6.name == "input6" && !ie6.value;
+        ie11 : TextInput ie11.name == "input11" && !ie11.value { name: sel };
+
+ } then {
+    
+    if(checkSAI({selection: sel, action: "UpdateTextField",
+      			input: "don't_care"}, null, true)) {
+        setSuccessOrBugMsg("Please working on the working equation first. ");
+    }
+    backtrack();
+    
+ }
+
+}
+
+rule EnterFinalEquation12Early {
+    salience: -2;
+    when {
+        p: chemProblem;
+        ie6 : TextInput ie6.name == "input6" && !ie6.value;
+        ie12 : TextInput ie12.name == "input12" && !ie12.value { name: sel };
+
+ } then {
+    
+    if(checkSAI({selection: sel, action: "UpdateTextField",
+      			input: "don't_care"}, null, true)) {
+        setSuccessOrBugMsg("Please working on the working equation first. ");
+    }
+    backtrack();
+    
+ }
+
+}
+
+
+rule EnterOInProductEarly {
+    salience: -2;
+    when {
+        p: chemProblem;
+        ie3 : TextInput ie3.name == "input3" && !ie3.value { name: sel };
+        ie8 : TextInput ie8.name == "input8" && !ie8.value;
+
+ } then {
+    
+    if(checkSAI({selection: sel, action: "UpdateTextField",
+      			input: "don't_care"}, null, true)) {
+        setSuccessOrBugMsg("Are all coefficients set in front of each products? ");
+    }
+    backtrack();
+    
+ }
+
+}
+
+rule EnterCarbonReactEarly {
+    salience: -2;
+    when {
+        p: chemProblem;
+        ie1 : TextInput ie1.name == "input1" && !ie1.value;
+        ie5 : TextInput ie5.name == "input5" && !ie5.value { name: sel };
+
+ } then {
+    
+    if(checkSAI({selection: sel, action: "UpdateTextField",
+      			input: "don't_care"}, null, true)) {
+        setSuccessOrBugMsg("Please find the lcm of Carbon first. ");
+    }
+    backtrack();
+    
+ }
+
+}
+
+rule EnterCarbonReactEarly {
+    salience: -2;
+    when {
+        p: chemProblem;
+        ie1 : TextInput ie1.name == "input1" && !ie1.value;
+        ie7 : TextInput ie7.name == "input7" && !ie7.value { name: sel };
+
+ } then {
+    
+    if(checkSAI({selection: sel, action: "UpdateTextField",
+      			input: "don't_care"}, null, true)) {
+        setSuccessOrBugMsg("Please find the lcm of Carbon first. ");
+    }
+    backtrack();
+    
+ }
+
 }
