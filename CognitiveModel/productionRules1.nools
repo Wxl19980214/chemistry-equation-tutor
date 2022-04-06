@@ -314,12 +314,15 @@ rule EnterOReactant {
         
         f = ie3.value * 1.0 / 2;
         console.log("f in here: " + f);
-        if (checkSAI({selection: sel, action: "UpdateTextField", input: f},
-        
+        if (checkSAI({selection: sel, action: "UpdateTextField", input: f},    
             function(studentSAI) {
+                if (studentSAI.selection != sel) {
+                    return false;
+                }
                 var inputNum = parseFloat(studentSAI.input, 10);
 				return (f == inputNum);
-			}))
+			}
+        ))
         {
             modify(ie4, "value", f);
             halt();
@@ -837,6 +840,29 @@ rule EnterOInProductEarly {
 
 }
 
+
+rule EnterOInProductEarly2 {
+    salience: -2;
+    when {
+        p: chemProblem;
+        ie3 : TextInput ie3.name == "input3" && !ie3.value;
+        ie7 : TextInput ie7.name == "input7" && ie7.value;
+        ie8 : TextInput ie8.name == "input8" && ie8.value;
+        ie6 : TextInput ie6.name == "input6" && !ie6.value { name: sel};
+
+ } then {
+    
+    if(checkSAI({selection: sel, action: "UpdateTextField",
+      			input: "don't_care"}, null, true)) {
+        setSuccessOrBugMsg("Please follow the step and fill in top blank first. ");
+    }
+    backtrack();
+    
+ }
+
+}
+
+
 rule EnterCarbonReactEarly {
     salience: -2;
     when {
@@ -868,6 +894,100 @@ rule EnterCarbonReactEarly {
     if(checkSAI({selection: sel, action: "UpdateTextField",
       			input: "don't_care"}, null, true)) {
         setSuccessOrBugMsg("Please find the lcm of Carbon first. ");
+    }
+    backtrack();
+    
+ }
+
+}
+
+rule EnterFinalBeforeButton1 {
+    salience: -2;
+    when {
+        p: chemProblem p.readyForFinal == false;
+        ie9 : TextInput ie9.name == "input9" && !ie9.value { name: sel };
+
+ } then {
+    
+    if(checkSAI({selection: sel, action: "UpdateTextField",
+      			input: "don't_care"}, null, true)) {
+        setSuccessOrBugMsg("Are we sure if all coefficients are integers?");
+    }
+    backtrack();
+    
+ }
+
+}
+
+rule EnterFinalBeforeButton2 {
+    salience: -2;
+    when {
+        p: chemProblem p.readyForFinal == false;
+        ie10 : TextInput ie10.name == "input10" && !ie10.value { name: sel };
+
+ } then {
+    
+    if(checkSAI({selection: sel, action: "UpdateTextField",
+      			input: "don't_care"}, null, true)) {
+        setSuccessOrBugMsg("Are we sure if all coefficients are integers?");
+    }
+    backtrack();
+    
+ }
+
+}
+
+rule EnterFinalBeforeButton3 {
+    salience: -2;
+    when {
+        p: chemProblem p.readyForFinal == false;
+        ie11 : TextInput ie11.name == "input11" && !ie11.value { name: sel };
+
+ } then {
+    
+    if(checkSAI({selection: sel, action: "UpdateTextField",
+      			input: "don't_care"}, null, true)) {
+        setSuccessOrBugMsg("Are we sure if all coefficients are integers?");
+    }
+    backtrack();
+    
+ }
+
+}
+
+rule EnterFinalBeforeButton4 {
+    salience: -2;
+    when {
+        p: chemProblem p.readyForFinal == false;
+        ie12 : TextInput ie12.name == "input12" && !ie12.value { name: sel };
+
+ } then {
+    
+    if(checkSAI({selection: sel, action: "UpdateTextField",
+      			input: "don't_care"}, null, true)) {
+        setSuccessOrBugMsg("Are we sure if all coefficients are integers?");
+    }
+    backtrack();
+    
+ }
+
+}
+
+
+rule EnterOWEBeforeRea {
+    salience: -2;
+    when {
+        p: chemProblem p.readyForFinal == false;
+        ie4 : TextInput ie4.name == "input4" && !ie4.value;
+        ie7 : TextInput ie7.name == "input7" && ie7.value;
+        ie8 : TextInput ie8.name == "input8" && ie8.value;
+        ie6 : TextInput ie6.name == "input6" && !ie6.value { name: sel };
+
+ } then {
+    
+    if(checkSAI({selection: sel, action: "UpdateTextField",
+      			input: "don't_care"}, null, true)) {
+        setSuccessOrBugMsg("Please fill in above blank before this. ");
     }
     backtrack();
     
